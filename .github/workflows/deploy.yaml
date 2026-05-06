@@ -1,0 +1,27 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout-code
+        uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: build frontend
+        run: |
+          cd "./frontend"
+          pnpm run build
+
+      - name: build backend
+        run: |
+          cd "./backend"
+          pnpm run build
