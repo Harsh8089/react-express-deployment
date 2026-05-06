@@ -16,12 +16,19 @@ jobs:
         with:
           node-version: 20
 
+      - name: add pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: build frontend
         run: |
           cd "./frontend"
+          pnpm install
           pnpm run build
 
       - name: build backend
         run: |
           cd "./backend"
+          pnpm install
           pnpm run build
