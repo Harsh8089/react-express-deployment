@@ -50,7 +50,7 @@ jobs:
             echo "Current directory: "
             pwd
 
-            source ~/.bashrc
+            export PATH="$HOME/.local/share/pnpm:$PATH"
 
             cd react-express-deployment
             git pull 
