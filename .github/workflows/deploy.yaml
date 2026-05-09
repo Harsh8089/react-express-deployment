@@ -49,10 +49,9 @@ jobs:
           ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS << 'EOF'
             echo "Current directory: "
             pwd
-
-            export PATH="/home/ubuntu/.nvm/versions/node/v20.19.0/bin/pnpm"
             
-
+            export PATH="/home/ubuntu/.nvm/versions/node/v20.19.0/bin:$PATH"
+            
             cd react-express-deployment
             git pull 
             
