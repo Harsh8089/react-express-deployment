@@ -48,4 +48,6 @@ jobs:
           chmod 600 PRIVATE_KEY
           ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS << 'EOF'
             cd react-express-deployment
+            git pull 
+            pnpm install
           EOF
