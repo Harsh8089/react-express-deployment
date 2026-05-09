@@ -5,7 +5,7 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: checkout-code
@@ -24,11 +24,17 @@ jobs:
       - name: build frontend
         run: |
           cd "./frontend"
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm run build
 
       - name: build backend
         run: |
           cd "./backend"
-          pnpm install
+          pnpm install --frozen-lockfile
           pnpm run build
+
+      - name: setup ssh
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+        run: |
+          echo TEST_SECRET
