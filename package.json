@@ -1,6 +1,8 @@
 {
   "name": "react-express",
   "scripts": {
+    "install": "cd backend && pnpm install --frozen-lockfile && cd ../frontend && pnpm install --frozen-lockfile",
+    "build": "cd backend && pnpm run build && cd ../frontend && pnpm run build",
     "dev:be": "cd backend && pnpm run dev",
     "dev:fe": "cd frontend && pnpm run dev",
     "dev": "npm run dev:be & npm run dev:fe"
