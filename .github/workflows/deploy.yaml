@@ -46,14 +46,13 @@ jobs:
         run: |
           printf "%s" "$SSH_PRIVATE_KEY" > PRIVATE_KEY
           chmod 600 PRIVATE_KEY
-          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS << 'EOF'
-            echo "Current directory: "
-            pwd
-            
-            export PATH="/home/ubuntu/.nvm/versions/node/v20.19.0/bin:$PATH"
+          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
+          << 'EOF'
+            # Non interactive shell doesn't load sh script
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
             
             cd react-express-deployment
             git pull 
-            
-            echo $(pnpm -v)
+            pnpm install
           EOF
