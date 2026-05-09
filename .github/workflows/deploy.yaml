@@ -49,12 +49,11 @@ jobs:
           ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
 
             if [ -d "/home/ubuntu/projects/react-express-deployment" ]; then
-              :
+              git pull
             else
-              git clone https://github.com/Harsh8089/react-express-deployment.git
+              git clone https://github.com/Harsh8089/react-express-deployment.git 
             fi
 
-            cd ./react-express-deployment
-            git pull
-            pnpm install
-
+            cd $HOME/react-express-deployment
+            echo $(node -v)
+            echo $(pnpm -v)
