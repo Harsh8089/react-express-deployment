@@ -8,30 +8,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout-code
-        uses: actions/checkout@v4
+      # - name: checkout-code
+      #   uses: actions/checkout@v4
 
-      - name: setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
+      # - name: setup node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 20
 
-      - name: add pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+      # - name: add pnpm
+      #   uses: pnpm/action-setup@v4
+      #   with:
+      #     version: 9
 
-      - name: build frontend
-        run: |
-          cd "./frontend"
-          pnpm install --frozen-lockfile
-          pnpm run build
+      # - name: build frontend
+      #   run: |
+      #     cd "./frontend"
+      #     pnpm install --frozen-lockfile
+      #     pnpm run build
 
-      - name: build backend
-        run: |
-          cd "./backend"
-          pnpm install --frozen-lockfile
-          pnpm run build
+      # - name: build backend
+      #   run: |
+      #     cd "./backend"
+      #     pnpm install --frozen-lockfile
+      #     pnpm run build
 
       - name: setup ssh
         env:
@@ -39,4 +39,5 @@ jobs:
           HOST_ADDRESS: ${{ secrets.HOST_ADDRESS }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
+          echo ${SSH_PRIVATE_KEY} > PRIVATE_KEY && chmod 600 PRIVATE_KEY
           ssh -i ${SSH_PRIVATE_KEY} ${HOST_MACHINE}@${HOST_ADDRESS}
