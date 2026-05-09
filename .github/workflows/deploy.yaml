@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
       - name: build frontend
         run: |
@@ -36,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: setup ssh and deploy
+      - name: setup ssh and connect
         env:
           HOST_MACHINE: ${{ secrets.HOST_MACHINE }}
           HOST_ADDRESS: ${{ secrets.HOST_ADDRESS }}
@@ -46,13 +48,13 @@ jobs:
           chmod 600 PRIVATE_KEY
           ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
 
-            if [ -d "/home/ubuntu/react-express-deployment" ]; then
-              cd /home/ubuntu/react-express-deployment
-              git pull
+            if [ -d "/home/ubuntu/projects/react-express-deployment" ]; then
+              :
             else
-              git clone https://github.com/Harsh8089/react-express-deployment.git /home/ubuntu/react-express-deployment
-              cd /home/ubuntu/react-express-deployment
+              git clone https://github.com/Harsh8089/react-express-deployment.git
             fi
 
-            echo $(pnpm -v)
-          EOF
+            cd ./react-express-deployment
+            git pull
+            pnpm install
+
