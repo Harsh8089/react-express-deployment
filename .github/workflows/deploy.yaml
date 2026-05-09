@@ -50,7 +50,8 @@ jobs:
             echo "Current directory: "
             pwd
 
-            export PATH="$HOME/.local/share/pnpm:$PATH"
+            export PATH="/home/ubuntu/.nvm/versions/node/v20.19.0/bin/pnpm"
+            
 
             cd react-express-deployment
             git pull 
