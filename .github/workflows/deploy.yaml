@@ -44,8 +44,8 @@ jobs:
         run: |
           printf "%s" "$SSH_PRIVATE_KEY" > PRIVATE_KEY
           chmod 600 PRIVATE_KEY
-          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS << 'EOF'
-            export PATH="$HOME/.local/share/pnpm:$PATH"
+          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
+            source ~/.bashrc  
 
             if [ -d "/home/ubuntu/react-express-deployment" ]; then
               cd /home/ubuntu/react-express-deployment
@@ -55,5 +55,5 @@ jobs:
               cd /home/ubuntu/react-express-deployment
             fi
 
-            pnpm install
+            echo $(pnpm -v)
           EOF
