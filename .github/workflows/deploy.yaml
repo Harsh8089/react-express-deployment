@@ -5,40 +5,45 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      # - name: checkout-code
-      #   uses: actions/checkout@v4
+      - name: checkout-code
+        uses: actions/checkout@v4
 
-      # - name: setup node
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 20
+      - name: add pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
 
-      # - name: add pnpm
-      #   uses: pnpm/action-setup@v4
-      #   with:
-      #     version: 9
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: "**/pnpm-lock.yaml"
 
-      # - name: build frontend
-      #   run: |
-      #     cd "./frontend"
-      #     pnpm install --frozen-lockfile
-      #     pnpm run build
-
-      # - name: build backend
-      #   run: |
-      #     cd "./backend"
-      #     pnpm install --frozen-lockfile
-      #     pnpm run build
-
-      - name: Deploy to EC2
-        env:
-          EC2_HOST: ${{ secrets.HOST_ADDRESS }}
-          EC2_USER: ${{ secrets.HOST_MACHINE }}
-          EC2_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: build frontend
         run: |
-          echo "${EC2_KEY}" > ec2-key.pem
-          chmod 600 ec2-key.pem
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST
+          cd frontend
+          pnpm install --frozen-lockfile
+          pnpm run build
+
+      - name: build backend
+        run: |
+          cd backend
+          pnpm install --frozen-lockfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: setup ssh and connect
+        env:
+          HOST_MACHINE: ${{ secrets.HOST_MACHINE }}
+          HOST_ADDRESS: ${{ secrets.HOST_ADDRESS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          printf "%s" "$SSH_PRIVATE_KEY" > PRIVATE_KEY
+          chmod 600 PRIVATE_KEY
+          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
