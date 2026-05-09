@@ -35,6 +35,8 @@ jobs:
 
       - name: setup ssh
         env:
-          TEST_SECRET: ${{ secrets.TEST_SECRET }}
+          HOST_MACHINE: ${{ secrets.HOST_MACHINE }}
+          HOST_ADDRESS: ${{ secrets.HOST_ADDRESS }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo TEST_SECRET
+          ssh -i ${SSH_PRIVATE_KEY} ${HOST_MACHINE}@${HOST_ADDRESS}
