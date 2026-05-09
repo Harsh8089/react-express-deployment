@@ -33,12 +33,12 @@ jobs:
       #     pnpm install --frozen-lockfile
       #     pnpm run build
 
-      - name: setup ssh
+      - name: Deploy to EC2
         env:
-          HOST_MACHINE: ${{ secrets.HOST_MACHINE }}
-          HOST_ADDRESS: ${{ secrets.HOST_ADDRESS }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          EC2_HOST: ${{ secrets.HOST_ADDRESS }}
+          EC2_USER: ${{ secrets.HOST_MACHINE }}
+          EC2_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          printf "%s" "$SSH_PRIVATE_KEY" > PRIVATE_KEY
-          chmod 600 PRIVATE_KEY
-          ssh -i PRIVATE_KEY -o StrictHostKeyChecking=no $HOST_MACHINE@$HOST_ADDRESS
+          echo "${EC2_KEY}" > ec2-key.pem
+          chmod 600 ec2-key.pem
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem $EC2_USER@$EC2_HOST << 'EOF'
