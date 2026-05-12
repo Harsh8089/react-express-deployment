@@ -28,6 +28,7 @@ services:
       - PORT=$NODE_LOCAL_PORT
       - DATABASE_URL=$DATABASE_URL
       - JWT_SECRET=$JWT_SECRET
+      - ALLOWED_ORIGINS=$ALLOWED_ORIGINS
     ports:
       - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
     networks:

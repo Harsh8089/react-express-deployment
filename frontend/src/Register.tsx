@@ -1,5 +1,5 @@
 import { useState, type FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Register: FC = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const Register: FC = () => {
       setLoading(true);
       setError("");
 
-      const res = await fetch("http://localhost:3000/api/register", {
+      const res = await fetch("/api/register", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         credentials: "include",
@@ -66,6 +66,9 @@ export const Register: FC = () => {
       <button onClick={handleRegister} disabled={loading}>
         {loading ? "Signing up..." : "Register"}
       </button>
+      <Link to={"/login"}>
+        Login
+      </Link>
     </div>
   );
 };

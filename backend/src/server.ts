@@ -7,10 +7,19 @@ import { PrismaClient } from "./generated/prisma/client.js";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS?.split(",");
+
 const app = express();
 
 app.use(cors({
-  origin: "*", // FIXME
+  origin: (origin, callback) => {
+    if(!origin || ALLOWED_ORIGINS?.includes(origin)) {
+      callback(null, true);
+    }
+    else {
+      callback(new Error("CORS blocked"));
+    }
+  },  
   credentials: true
 }));
 app.use(express.json());

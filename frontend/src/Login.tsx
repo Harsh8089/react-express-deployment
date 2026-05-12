@@ -1,5 +1,5 @@
 import { useState, type FC } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Login: FC<{ setIsAuth: (val: boolean) => void }> = ({ setIsAuth }) => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const Login: FC<{ setIsAuth: (val: boolean) => void }> = ({ setIsAuth }) 
       setLoading(true);
       setError("");
 
-      const res = await fetch("http://localhost:3000/api/login", {
+      const res = await fetch("/api/login", {
         method: "POST",
         body: JSON.stringify({ username, password }),
         credentials: "include",
@@ -67,6 +67,9 @@ export const Login: FC<{ setIsAuth: (val: boolean) => void }> = ({ setIsAuth }) 
       <button onClick={handleLogin} disabled={loading}>
         {loading ? "Logging in..." : "Login"}
       </button>
+      <Link to={"/register"}>
+        Register
+      </Link>
     </div>
   );
 };
